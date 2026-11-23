@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f2" />
+    <meta name="description" content="Order Bengaluru favorites from neighborhood kitchens around Indiranagar with Supper Club." />
+    <title>Supper Club | Bengaluru food, on your time</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="wordmark" href="#top" aria-label="Supper Club home"><span class="brand-mark">s</span> supper club<span class="wordmark-period">.</span></a>
+      <div class="delivery-address" aria-label="Delivery location">
+        <span class="location-pin" aria-hidden="true">⌖</span>
+        <span><small>Delivering around</small><strong>Indiranagar, Bengaluru <span aria-hidden="true">⌄</span></strong></span>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-button saved-nav" id="saved-filter" type="button" aria-label="Show saved dishes" title="Saved dishes">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.4 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+        </button>
+        <button class="cart-nav" id="open-cart" type="button" aria-label="Open bag">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+          <span>Bag</span><span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="promo-banner" aria-label="Today's special">
+        <div class="promo-copy">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> BENGALURU, MADE FRESH</span>
+          <h1>Good food.<br /><em>Good mood.</em></h1>
+          <p>From benne dosa mornings to biryani nights, delivered around Indiranagar.</p>
+          <a class="promo-link" href="#menu">Find your next favorite <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="promo-sticker"><span>FIRST<br />BITE</span><strong>10%</strong><small>off today</small></div>
+        <div class="promo-note">A little something<br />for your first order <span>✳</span></div>
+      </section>
+
+      <div class="content-grid" id="menu">
+        <section class="menu-column" aria-labelledby="menu-heading">
+          <div class="section-heading">
+            <div><p class="section-kicker">MADE NEAR YOU</p><h2 id="menu-heading">The good stuff</h2></div>
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+              <input id="search" type="search" placeholder="Find a dish" aria-label="Search dishes" />
+              <kbd>/</kbd>
+            </div>
+          </div>
+
+          <div class="filter-row" id="categories" aria-label="Filter by category">
+            <button class="filter-chip active" type="button" data-category="All">Everything <span>06</span></button>
+            <button class="filter-chip" type="button" data-category="Breakfast">Breakfast</button>
+            <button class="filter-chip" type="button" data-category="Biryani">Biryani</button>
+            <button class="filter-chip" type="button" data-category="Bowls">Bowls</button>
+            <button class="filter-chip" type="button" data-category="Meals">Meals</button>
+            <button class="filter-chip" type="button" data-category="Desserts">Desserts</button>
+          </div>
+
+          <div class="results-line">
+            <span id="results-label">All the neighborhood favorites</span>
+            <div class="results-actions">
+              <select id="sort-menu" class="sort-menu" aria-label="Sort dishes">
+                <option value="featured">Featured</option>
+                <option value="rating">Top rated</option>
+                <option value="price-low">Price: low to high</option>
+                <option value="price-high">Price: high to low</option>
+                <option value="fastest">Fastest</option>
+              </select>
+              <button id="clear-filters" type="button" hidden>Clear filters <span aria-hidden="true">×</span></button>
+            </div>
+          </div>
+          <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
+          <div class="empty-state" id="empty-state" hidden><span>✳</span><h3>No bites found</h3><p>Try another search or category.</p></div>
+          <p class="menu-footnote"><span aria-hidden="true">✳</span> Thoughtfully made by kitchens just around the corner.</p>
+        </section>
+
+        <aside class="cart-panel" id="cart-panel" aria-labelledby="cart-heading">
+          <div class="cart-heading"><div><p class="section-kicker">YOUR ORDER</p><h2 id="cart-heading">The bag <span id="bag-item-count">(0)</span></h2></div><button class="close-cart" id="close-cart" type="button" aria-label="Close bag">×</button></div>
+          <div class="fulfillment-toggle" role="group" aria-label="Order type">
+            <button type="button" class="fulfillment-option selected" data-fulfillment="delivery"><span aria-hidden="true">↗</span> Delivery</button>
+            <button type="button" class="fulfillment-option" data-fulfillment="pickup"><span aria-hidden="true">⌖</span> Pickup</button>
+          </div>
+          <div class="delivery-estimate"><span class="estimate-icon" aria-hidden="true">◷</span><span id="estimate-copy"><strong>35–45 min</strong><small>Estimated delivery</small></span><span class="estimate-arrow">↗</span></div>
+          <div class="cart-items" id="cart-items"></div>
+          <div class="cart-empty" id="cart-empty"><div class="empty-bag-icon" aria-hidden="true">＋</div><strong>Your bag is taking a breather</strong><span>Add something delicious to get started.</span></div>
+          <div class="promo-entry"><label for="promo-code">Have a little code?</label><div><input id="promo-code" placeholder="Try FIRSTBITE" autocomplete="off" /><button id="apply-promo" type="button">Apply</button></div><small id="promo-message" aria-live="polite"></small></div>
+          <div class="bill" id="bill" hidden>
+            <div><span>Subtotal</span><strong id="subtotal">₹0</strong></div>
+            <div><span id="fee-label">Delivery fee</span><strong id="delivery-fee">₹29</strong></div>
+            <div><span>Packaging</span><strong id="packaging-fee">₹8</strong></div>
+            <div><span>GST (5%)</span><strong id="gst">₹0</strong></div>
+            <div class="discount-line" id="discount-line" hidden><span>First bite discount</span><strong id="discount">−₹0</strong></div>
+            <div class="bill-total"><span>Total</span><strong id="total">₹0</strong></div>
+          </div>
+          <button class="checkout-button" id="checkout" type="button" disabled><span>Continue to checkout</span><span aria-hidden="true">→</span></button>
+          <p class="secure-note">A good meal is just around the corner.</p>
+        </aside>
+      </div>
+    </main>
+
+    <div class="cart-backdrop" id="cart-backdrop"></div>
+    <button class="mobile-bag" id="mobile-bag" type="button"><span><strong id="mobile-bag-count">0 items</strong><small>View your bag</small></span><strong id="mobile-bag-total">₹0 <span aria-hidden="true">→</span></strong></button>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog class="checkout-dialog" id="checkout-dialog">
+      <form id="checkout-form">
+        <button class="dialog-close" id="dialog-close" type="button" aria-label="Close checkout">×</button>
+        <p class="section-kicker">ONE LAST THING</p>
+        <h2>Make it yours.</h2>
+        <p class="dialog-intro" id="checkout-intro">Where should we bring the good stuff?</p>
+        <label for="customer-name">Your name</label>
+        <input id="customer-name" name="name" autocomplete="name" required maxlength="80" placeholder="Jamie Rivera" />
+        <div class="delivery-fields" id="delivery-fields">
+          <label for="customer-address">Delivery address</label>
+          <input id="customer-address" name="address" autocomplete="street-address" required maxlength="200" placeholder="12th Main Road, Indiranagar" />
+          <label for="customer-pincode">Bengaluru PIN code</label>
+          <input id="customer-pincode" name="pincode" inputmode="numeric" autocomplete="postal-code" required pattern="560[0-9]{3}" maxlength="6" placeholder="560038" title="Enter a six-digit Bengaluru PIN code starting with 560" />
+        </div>
+        <label for="customer-phone">Indian mobile number</label>
+        <input id="customer-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" required pattern="[6-9][0-9]{9}" maxlength="10" placeholder="9876543210" title="Enter a 10-digit Indian mobile number" />
+        <p class="form-error" id="form-error" role="alert"></p>
+        <button class="checkout-button dialog-submit" type="submit"><span>Place my order</span><span aria-hidden="true">→</span></button>
+        <small class="demo-note">Demo checkout: no payment will be collected.</small>
+      </form>
+    </dialog>
+
+    <dialog class="order-dialog" id="order-dialog">
+      <button class="dialog-close" id="order-close" type="button" aria-label="Close order status">×</button>
+      <div class="order-success-mark" aria-hidden="true">✓</div>
+      <p class="section-kicker">ORDER <span id="order-number">#------</span></p>
+      <h2>You're all set.</h2>
+      <p id="order-summary">Your neighborhood kitchen is getting started.</p>
+      <div class="tracking-steps"><div class="tracking-step done"><span>✓</span><div><strong>Order confirmed</strong><small>We sent it to the kitchen</small></div></div><div class="tracking-step current"><span>2</span><div><strong>Being made with care</strong><small id="order-eta">25–35 min</small></div></div><div class="tracking-step"><span>3</span><div><strong>On its way</strong><small>Almost at your door</small></div></div></div>
+      <button class="checkout-button" id="order-done" type="button"><span>Back to the good stuff</span><span aria-hidden="true">→</span></button>
+    </dialog>
+
+    <footer><a class="wordmark" href="#top"><span class="brand-mark">s</span> supper club<span class="wordmark-period">.</span></a><span>Serving Indiranagar and nearby Bengaluru neighborhoods.</span><span>© Supper Club 2026</span></footer>
+  </body>
+</html>
